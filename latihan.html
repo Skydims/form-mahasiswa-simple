@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Registrasi Mata Kuliah</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-actions {
+            text-align: center;
+        }
+        .form-actions button {
+            margin: 5px;
+            padding: 10px 15px;
+        }
+        #output {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Form Registrasi Mata Kuliah</h1>
+    <form id="registrasiForm">
+        <div class="form-group">
+            <label for="no_regis">Nomor Registrasi:</label>
+            <select id="no_regis" name="no_regis" required>
+                <option value="">-- Pilih Nomor Registrasi --</option>
+                <option value="2024HK125">2024HK125</option>
+                <option value="2023TL004">2023TL004</option>
+                <option value="2021ML132">2021ML132</option>
+                <option value="2020TI110">2020TI110</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="nama">Nama:</label>
+            <input type="text" id="nama" name="nama" placeholder="Masukkan Nama" required>
+        </div>
+        <div class="form-group">
+            <label for="kode_mk">Kode Mata Kuliah:</label>
+            <select id="kode_mk" name="kode_mk" required>
+                <option value="">-- Pilih Kode Mata Kuliah --</option>
+                <option value="mkdu2">MKDU2</option>
+                <option value="mkpi2">MKPI2</option>
+                <option value="mkin3">MKIN3</option>
+            </select>
+        </div>
+        <div class="form-actions">
+            <button type="button" onclick="submitForm()">Submit</button>
+            <button type="button" onclick="resetForm()">Reset</button>
+        </div>
+    </form>
+
+    <div id="output" style="display:none;"></div>
+
+    <script>
+        function submitForm() {
+            // Ambil nilai dari form
+            const noRegis = document.getElementById('no_regis').value;
+            const nama = document.getElementById('nama').value;
+            const kodeMK = document.getElementById('kode_mk').value;
+
+            if (!noRegis || !nama || !kodeMK) {
+                alert('Harap isi semua kolom!');
+                return;
+            }
+
+            // Tentukan Mata Kuliah
+            let mataKuliah;
+            if (kodeMK.startsWith('mkdu')) {
+                mataKuliah = 'Dasar Umum';
+            } else if (kodeMK.startsWith('mkpi')) {
+                mataKuliah = 'Pilihan';
+            } else if (kodeMK.startsWith('mkin')) {
+                mataKuliah = 'Inti';
+            }
+
+            // Ambil SKS dari karakter terakhir kode mata kuliah
+            const sks = parseInt(kodeMK.slice(-1));
+
+            // Tentukan Jurusan dari kode registrasi
+            let jurusan;
+            if (noRegis.includes('HK')) {
+                jurusan = 'Hukum';
+            } else if (noRegis.includes('TI')) {
+                jurusan = 'Teknik Informatika';
+            } else if (noRegis.includes('ML')) {
+                jurusan = 'Manajemen Logistik';
+            } else if (noRegis.includes('TL')) {
+                jurusan = 'Teknik Lingkungan';
+            } else {
+                jurusan = 'Tidak Diketahui';
+            }
+
+            // Ambil Angkatan dari 4 karakter pertama no registrasi
+            const angkatan = noRegis.slice(0, 4);
+
+            // Ambil Nomor Urut dari 3 karakter terakhir no registrasi
+            const noUrut = noRegis.slice(-3);
+
+            // Buat output
+            const output = document.getElementById('output');
+            output.innerHTML = `
+                <h3>Output:</h3>
+                <p><strong>Nama:</strong> ${nama}</p>
+                <p><strong>Jurusan:</strong> ${jurusan}</p>
+                <p><strong>No Urut:</strong> ${noUrut}</p>
+                <p><strong>SKS:</strong> ${sks}</p>
+                <p><strong>No Registrasi:</strong> ${noRegis}</p>
+                <p><strong>Angkatan:</strong> ${angkatan}</p>
+                <p><strong>Mata Kuliah:</strong> ${mataKuliah}</p>
+            `;
+            output.style.display = 'block';
+        }
+
+        function resetForm() {
+            // Reset semua input form
+            document.getElementById('registrasiForm').reset();
+
+            // Sembunyikan output
+            const output = document.getElementById('output');
+            output.style.display = 'none';
+            output.innerHTML = '';
+        }
+    </script>
+</body>
+</html>
